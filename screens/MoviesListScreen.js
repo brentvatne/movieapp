@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import {
   ListView,
   Platform,
@@ -9,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
-import { withNavigation } from '@exponent/ex-navigation';
+import { withNavigation } from '@expo/ex-navigation';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
   Text,
   View,
@@ -7,7 +8,7 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-import FadeIn from '@exponent/react-native-fade-in-image';
+import FadeIn from '@expo/react-native-fade-in-image';
 import styles from './styles/Trailers';
 
 const Trailers = ({ getTabHeight, youtubeVideos, openYoutube }) => {

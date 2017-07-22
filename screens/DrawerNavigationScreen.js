@@ -5,19 +5,15 @@ import {
   Text,
   ToastAndroid,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import {
   StackNavigation,
   DrawerNavigation,
-  DrawerNavigationItem,
-} from '@exponent/ex-navigation';
-import {
-  Ionicons,
-} from '@exponent/vector-icons';
-import {
-  Components,
-} from 'exponent';
+  DrawerNavigationItem
+} from '@expo/ex-navigation';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo';
 import Colors from '../constants/Colors';
 import defaultRouteConfig from '../navigation/defaultRouteConfig';
 
@@ -30,8 +26,8 @@ export default class DrawerNavigationScreen extends React.Component {
         renderNavigationView={this._renderNavigationView}
         navigatorUID="drawer"
         id="drawer"
-        initialItem="movies">
-
+        initialItem="movies"
+      >
         <DrawerNavigationItem id="search">
           <StackNavigation
             defaultRouteConfig={defaultRouteConfig}
@@ -57,35 +53,57 @@ export default class DrawerNavigationScreen extends React.Component {
   }
 
   _renderNavigationView = () => {
-    const iconSearch = (<Ionicons name="md-search" size={26} color="#9F9F9F" style={[styles.drawerListIcon, { paddingLeft: 2 }]} />);
-    const iconMovies = (<Ionicons name="md-film" size={26} color="#9F9F9F" style={[styles.drawerListIcon, { paddingLeft: 3 }]} />);
-    const iconTV = (<Ionicons name="ios-desktop" size={26} color="#9F9F9F" style={styles.drawerListIcon} />);
+    const iconSearch = (
+      <Ionicons
+        name="md-search"
+        size={26}
+        color="#9F9F9F"
+        style={[styles.drawerListIcon, { paddingLeft: 2 }]}
+      />
+    );
+    const iconMovies = (
+      <Ionicons
+        name="md-film"
+        size={26}
+        color="#9F9F9F"
+        style={[styles.drawerListIcon, { paddingLeft: 3 }]}
+      />
+    );
+    const iconTV = (
+      <Ionicons
+        name="ios-desktop"
+        size={26}
+        color="#9F9F9F"
+        style={styles.drawerListIcon}
+      />
+    );
 
     return (
-      <Components.LinearGradient
+      <LinearGradient
         colors={['rgba(0, 0, 0, 0.7)', 'rgba(0,0,0, 0.9)', 'rgba(0,0,0, 1)']}
-        style={styles.linearGradient}>
+        style={styles.linearGradient}
+      >
         <View style={styles.container}>
           <View style={styles.drawerList}>
             <TouchableOpacity onPress={this._openSearch}>
               <View style={styles.drawerListItem}>
                 {iconSearch}
-                <Text style={styles.drawerListItemText}>
-                  Search
-                </Text>
+                <Text style={styles.drawerListItemText}>Search</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this._goToMovies}>
               <View style={styles.drawerListItem}>
                 {iconMovies}
-                <Text style={styles.drawerListItemText}>
-                  Movies
-                </Text>
+                <Text style={styles.drawerListItemText}>Movies</Text>
               </View>
             </TouchableOpacity>
             <View style={styles.drawerListItem}>
               {iconTV}
-              <Text style={styles.drawerListItemText} onPress={() => ToastAndroid.show('Coming Soon!', ToastAndroid.SHORT)}>
+              <Text
+                style={styles.drawerListItemText}
+                onPress={() =>
+                  ToastAndroid.show('Coming Soon!', ToastAndroid.SHORT)}
+              >
                 TV Shows
               </Text>
             </View>
@@ -94,25 +112,25 @@ export default class DrawerNavigationScreen extends React.Component {
             {/* 'v1.0.0' */}
           </Text>
         </View>
-      </Components.LinearGradient>
+      </LinearGradient>
     );
-  }
+  };
 
   _toggleDrawer = () => {
     this.props.navigation.getNavigatorByUID('drawer').toggleDrawer();
-  }
+  };
 
   _openSearch = () => {
-    this.props.navigation.showModal('search', {title: 'Search'});
+    this.props.navigation.showModal('search', { title: 'Search' });
     requestAnimationFrame(this._toggleDrawer);
-  }
+  };
 
   _goToMovies = () => {
-    this.props.navigation.performAction(({drawer}) => {
+    this.props.navigation.performAction(({ drawer }) => {
       drawer('drawer').jumpToItem('movies');
     });
     requestAnimationFrame(this._toggleDrawer);
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -122,9 +140,7 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     justifyContent: 'center'
   },
-  drawerList: {
-
-  },
+  drawerList: {},
   drawerListIcon: {
     width: 27
   },

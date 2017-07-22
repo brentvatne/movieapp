@@ -1,30 +1,44 @@
-import React, { PropTypes } from 'react';
-import {
-  Image,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
-import FadeIn from '@exponent/react-native-fade-in-image';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Image, Platform, Text, TouchableOpacity, View } from 'react-native';
+import FadeIn from '@expo/react-native-fade-in-image';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Exponent from 'exponent';
-const { LinearGradient } = Exponent.Components;
+import Expo from 'expo';
+const { LinearGradient } = Expo;
 
 import styles from './styles/CardOne';
 import { TMDB_IMG_URL } from '../constants/Api';
 
-const iconStar = (<Icon name="md-star" size={16} color="#F5B642" />);
+const iconStar = <Icon name="md-star" size={16} color="#F5B642" />;
 
-const CardOne = ({ info, viewMovie }) => (
+const CardOne = ({ info, viewMovie }) =>
   <View>
-    <FadeIn placeholderStyle={{backgroundColor: Platform.OS === 'android' ? 'transparent' : '#000'}}>
-      <Image source={{ uri: `${TMDB_IMG_URL}/w780/${(info.backdrop_path || info.poster_path)}` }} style={styles.imageBackdrop} />
+    <FadeIn
+      placeholderStyle={{
+        backgroundColor: Platform.OS === 'android' ? 'transparent' : '#000'
+      }}
+    >
+      <Image
+        source={{
+          uri: `${TMDB_IMG_URL}/w780/${info.backdrop_path || info.poster_path}`
+        }}
+        style={styles.imageBackdrop}
+      />
     </FadeIn>
-    <LinearGradient colors={['rgba(0, 0, 0, 0.5)', 'rgba(0,0,0, 0.7)', 'rgba(0,0,0, 0.8)']} style={styles.linearGradient} />
+    <LinearGradient
+      colors={['rgba(0, 0, 0, 0.5)', 'rgba(0,0,0, 0.7)', 'rgba(0,0,0, 0.8)']}
+      style={styles.linearGradient}
+    />
     <View style={styles.cardContainer}>
-      <FadeIn placeholderStyle={{backgroundColor: Platform.OS === 'android' ? 'transparent' : '#eee'}}>
-        <Image source={{ uri: `${TMDB_IMG_URL}/w185/${info.poster_path}` }} style={styles.cardImage} />
+      <FadeIn
+        placeholderStyle={{
+          backgroundColor: Platform.OS === 'android' ? 'transparent' : '#eee'
+        }}
+      >
+        <Image
+          source={{ uri: `${TMDB_IMG_URL}/w185/${info.poster_path}` }}
+          style={styles.cardImage}
+        />
       </FadeIn>
       <View style={styles.cardDetails}>
         <Text style={styles.cardTitle} numberOfLines={2}>
@@ -43,15 +57,17 @@ const CardOne = ({ info, viewMovie }) => (
         <Text style={styles.cardDescription} numberOfLines={3}>
           {info.overview}
         </Text>
-        <TouchableOpacity activeOpacity={0.9} onPress={viewMovie.bind(this, info.id)}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={viewMovie.bind(this, info.id)}
+        >
           <View style={styles.viewButton}>
             <Text style={styles.viewButtonText}>View Details</Text>
           </View>
         </TouchableOpacity>
       </View>
     </View>
-  </View>
-);
+  </View>;
 
 CardOne.propTypes = {
   info: PropTypes.object.isRequired,
