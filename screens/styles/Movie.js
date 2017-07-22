@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { Constants } from 'exponent';
+import { Constants } from 'expo';
 
 const styles = StyleSheet.create({
   dismissButton: {
@@ -7,14 +7,14 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         top: 15,
-        right: 15,
+        right: 15
       },
       android: {
         top: 15 + Constants.statusBarHeight,
-        left: 15,
-      },
+        left: 15
+      }
     }),
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   textStyle: {
     color: 'white',

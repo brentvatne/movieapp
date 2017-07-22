@@ -7,7 +7,7 @@ import {
 import {
   NavigationStyles,
   StackNavigation,
-} from '@exponent/ex-navigation';
+} from '@expo/ex-navigation';
 import BackButton from '../navigation/BackButton';
 import CloseButton from '../navigation/CloseButton';
 import defaultRouteConfig from '../navigation/defaultRouteConfig';

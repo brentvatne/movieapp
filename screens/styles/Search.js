@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import { NavigationBar } from '@exponent/ex-navigation';
+import { NavigationBar } from '@expo/ex-navigation';
 
 const styles = StyleSheet.create({
   container: {

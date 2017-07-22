@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import {
   Animated,
   Image,
@@ -14,10 +15,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import FadeIn from '@exponent/react-native-fade-in-image';
+import FadeIn from '@expo/react-native-fade-in-image';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Exponent, { Constants } from 'exponent';
-const { LinearGradient } = Exponent.Components;
+import expo, { Constants } from 'expo';
+const { LinearGradient } = expo;
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import Swiper from 'react-native-swiper';
 import axios from 'axios';
@@ -39,9 +40,9 @@ import Trailers from '../components/tabs/Trailers';
 class Movie extends Component {
   static route = {
     navigationBar: {
-      visible: false,
-    },
-  }
+      visible: false
+    }
+  };
 
   constructor(props) {
     super(props);
@@ -78,7 +79,8 @@ class Movie extends Component {
   }
 
   _retrieveDetails(isRefreshed) {
-    this.props.actions.retrieveMovieDetails(this.props.route.params.movieId)
+    this.props.actions
+      .retrieveMovieDetails(this.props.route.params.movieId)
       .then(() => {
         this._retrieveYoutubeDetails();
       });
@@ -86,7 +88,10 @@ class Movie extends Component {
   }
 
   _retrieveSimilarMovies() {
-    this.props.actions.retrieveSimilarMovies(this.props.route.params.movieId, 1);
+    this.props.actions.retrieveSimilarMovies(
+      this.props.route.params.movieId,
+      1
+    );
   }
 
   _onRefresh() {
@@ -112,7 +117,7 @@ class Movie extends Component {
       Animated.spring(this.state.dismissButtonVisibility, {
         toValue: 0,
         speed: 20,
-        bounciness: 0,
+        bounciness: 0
       }).start();
     } else {
       if (this.state.dismissButtonVisibility.__getValue() === 1) {
@@ -121,7 +126,7 @@ class Movie extends Component {
       Animated.spring(this.state.dismissButtonVisibility, {
         toValue: 1,
         speed: 20,
-        bounciness: 0,
+        bounciness: 0
       }).start();
     }
   }
@@ -132,7 +137,10 @@ class Movie extends Component {
 
   // ScrollView onContentSizeChange prop
   _onContentSizeChange(width, height) {
-    if (this.state.tab === 0 && this.state.infoTabHeight === this.state.castsTabHeight) {
+    if (
+      this.state.tab === 0 &&
+      this.state.infoTabHeight === this.state.castsTabHeight
+    ) {
       this.setState({ infoTabHeight: height });
     }
   }
@@ -144,14 +152,17 @@ class Movie extends Component {
 
   _retrieveYoutubeDetails() {
     this.props.details.videos.results.map(item => {
-      const request = axios.get(`${YOUTUBE_URL}/?id=${item.key}&key=${YOUTUBE_API_KEY}&part=snippet`)
-                .then(res => {
-                  const data = this.state.youtubeVideos;
-                  data.push(res.data.items[0]);
-                })
-                .catch(error => {
-                  console.log(error); //eslint-disable-line
-                });
+      const request = axios
+        .get(
+          `${YOUTUBE_URL}/?id=${item.key}&key=${YOUTUBE_API_KEY}&part=snippet`
+        )
+        .then(res => {
+          const data = this.state.youtubeVideos;
+          data.push(res.data.items[0]);
+        })
+        .catch(error => {
+          console.log(error); //eslint-disable-line
+        });
       return request;
     });
   }
@@ -161,7 +172,10 @@ class Movie extends Component {
       if (supported) {
         Linking.openURL(youtubeUrl);
       } else {
-        ToastAndroid.show(`RN Don't know how to handle this url ${youtubeUrl}`, ToastAndroid.SHORT);
+        ToastAndroid.show(
+          `RN Don't know how to handle this url ${youtubeUrl}`,
+          ToastAndroid.SHORT
+        );
       }
     });
   }
@@ -172,27 +186,32 @@ class Movie extends Component {
     if (Platform.OS === 'ios') {
       NativeModules.StatusBarManager.setHidden(false, 'slide');
     }
-  }
+  };
 
   _renderDismissButton() {
     let translateY = this.state.dismissButtonVisibility.interpolate({
       inputRange: [0, 1],
-      outputRange: [-75, 0],
+      outputRange: [-75, 0]
     });
 
     if (Platform.OS === 'ios') {
       return (
-        <Animated.View style={[styles.dismissButton, {transform: [{translateY}]}]}>
+        <Animated.View
+          style={[styles.dismissButton, { transform: [{ translateY }] }]}
+        >
           <TouchableOpacity
             onPress={this._dismissModal}
-            hitSlop={{top: 20, left: 20, right: 20, bottom: 20}}>
+            hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
+          >
             <Ionicons name="ios-arrow-down" size={35} color="#fff" />
           </TouchableOpacity>
         </Animated.View>
       );
     } else {
       return (
-        <Animated.View style={[styles.dismissButton, {transform: [{translateY}]}]}>
+        <Animated.View
+          style={[styles.dismissButton, { transform: [{ translateY }] }]}
+        >
           <BackButton onPress={this._dismissModal} />
         </Animated.View>
       );
@@ -209,31 +228,35 @@ class Movie extends Component {
     if (this.state.tab === 1) height = this.state.castsTabHeight;
     if (this.state.tab === 2) height = this.state.trailersTabHeight;
 
-    return (
-      this.state.isLoading ? <View style={styles.progressBar}><ProgressBar /></View> :
-        <View style={{flex: 1}}>
-          { Platform.OS === 'android' &&
-              <View style={{
+    return this.state.isLoading
+      ? <View style={styles.progressBar}>
+          <ProgressBar />
+        </View>
+      : <View style={{ flex: 1 }}>
+          {Platform.OS === 'android' &&
+            <View
+              style={{
                 height: Constants.statusBarHeight,
                 backgroundColor: '#0a0a0a'
-              }} />
-          }
+              }}
+            />}
           <ScrollView
-              style={styles.container}
-              onScroll={this._onScroll.bind(this)}
-              scrollEventThrottle={100}
-              onContentSizeChange={this._onContentSizeChange}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.isRefreshing}
-                  onRefresh={this._onRefresh}
-                  colors={['#EA0000']}
-                  tintColor="white"
-                  title="loading..."
-                  titleColor="white"
-                  progressBackgroundColor="white"
-                />
-              }>
+            style={styles.container}
+            onScroll={this._onScroll.bind(this)}
+            scrollEventThrottle={100}
+            onContentSizeChange={this._onContentSizeChange}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.isRefreshing}
+                onRefresh={this._onRefresh}
+                colors={['#EA0000']}
+                tintColor="white"
+                title="loading..."
+                titleColor="white"
+                progressBackgroundColor="white"
+              />
+            }
+          >
             <View style={{ height }}>
               <Swiper
                 style={styles.swiper}
@@ -242,34 +265,59 @@ class Movie extends Component {
                 showsPagination={false}
                 height={248}
                 loop
-                index={5}>
-                {
-                  info.images.backdrops.map((item, index) => (
-                    <View key={index}>
-                      <FadeIn placeholderStyle={{backgroundColor: Platform.OS === 'android' ? 'transparent' : 'black'}}>
-                        <Image source={{ uri: `${TMDB_IMG_URL}/w780/${(item.file_path)}` }} style={styles.imageBackdrop} />
-                      </FadeIn>
-                      <LinearGradient
-                        colors={['rgba(0, 0, 0, 0.2)', 'rgba(0,0,0, 0.5)', 'rgba(0,0,0, 0.99)']}
-                        style={styles.linearGradient}
+                index={5}
+              >
+                {info.images.backdrops.map((item, index) =>
+                  <View key={index}>
+                    <FadeIn
+                      placeholderStyle={{
+                        backgroundColor:
+                          Platform.OS === 'android' ? 'transparent' : 'black'
+                      }}
+                    >
+                      <Image
+                        source={{
+                          uri: `${TMDB_IMG_URL}/w780/${item.file_path}`
+                        }}
+                        style={styles.imageBackdrop}
                       />
-                    </View>
-                  ))
-                }
+                    </FadeIn>
+                    <LinearGradient
+                      colors={[
+                        'rgba(0, 0, 0, 0.2)',
+                        'rgba(0,0,0, 0.5)',
+                        'rgba(0,0,0, 0.99)'
+                      ]}
+                      style={styles.linearGradient}
+                    />
+                  </View>
+                )}
               </Swiper>
               <View style={styles.cardContainer}>
-                <FadeIn placeholderStyle={{backgroundColor: Platform.OS === 'android' ? 'transparent' : 'black'}}>
-                  <Image source={{ uri: `${TMDB_IMG_URL}/w185/${info.poster_path}` }} style={styles.cardImage} />
+                <FadeIn
+                  placeholderStyle={{
+                    backgroundColor:
+                      Platform.OS === 'android' ? 'transparent' : 'black'
+                  }}
+                >
+                  <Image
+                    source={{ uri: `${TMDB_IMG_URL}/w185/${info.poster_path}` }}
+                    style={styles.cardImage}
+                  />
                 </FadeIn>
                 <View style={styles.cardDetails}>
-                  <Text style={styles.cardTitle}>{info.original_title}</Text>
-                  <Text style={styles.cardTagline}>{info.tagline}</Text>
+                  <Text style={styles.cardTitle}>
+                    {info.original_title}
+                  </Text>
+                  <Text style={styles.cardTagline}>
+                    {info.tagline}
+                  </Text>
                   <View style={styles.cardGenre}>
-                    {
-                      info.genres.map(item => (
-                        <Text key={item.id} style={styles.cardGenreItem}>{item.name}</Text>
-                      ))
-                    }
+                    {info.genres.map(item =>
+                      <Text key={item.id} style={styles.cardGenreItem}>
+                        {item.name}
+                      </Text>
+                    )}
                   </View>
                   <View style={styles.cardNumbers}>
                     <View style={styles.cardStar}>
@@ -283,16 +331,25 @@ class Movie extends Component {
               <View style={styles.contentContainer}>
                 <ScrollableTabView
                   onChangeTab={this._onChangeTab}
-                  renderTabBar={() => (
+                  renderTabBar={() =>
                     <MovieInfoTabBar
                       textStyle={styles.textStyle}
                       underlineStyle={styles.underlineStyle}
                       style={styles.tabBar}
-                    />
-                  )}>
+                    />}
+                >
                   <Info tabLabel="INFO" info={info} />
-                  <Casts tabLabel="CASTS" info={info} getTabHeight={this._getTabHeight} />
-                  <Trailers tabLabel="TRAILERS" youtubeVideos={this.state.youtubeVideos} openYoutube={this._openYoutube} getTabHeight={this._getTabHeight} />
+                  <Casts
+                    tabLabel="CASTS"
+                    info={info}
+                    getTabHeight={this._getTabHeight}
+                  />
+                  <Trailers
+                    tabLabel="TRAILERS"
+                    youtubeVideos={this.state.youtubeVideos}
+                    openYoutube={this._openYoutube}
+                    getTabHeight={this._getTabHeight}
+                  />
                 </ScrollableTabView>
               </View>
             </View>
@@ -304,8 +361,7 @@ class Movie extends Component {
             animated
             showHideTransition="slide"
           />
-        </View>
-    );
+        </View>;
   }
 }
 
@@ -313,7 +369,7 @@ Movie.propTypes = {
   actions: PropTypes.object.isRequired,
   details: PropTypes.object.isRequired,
   navigator: PropTypes.object,
-  route: PropTypes.object,
+  route: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {

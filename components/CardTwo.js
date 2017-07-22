@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {
   Image,
   Text,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import FadeIn from '@exponent/react-native-fade-in-image';
+import FadeIn from '@expo/react-native-fade-in-image';
 
 import styles from './styles/CardTwo';
 import { TMDB_IMG_URL } from '../constants/Api';

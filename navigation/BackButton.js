@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import { withNavigation } from '@exponent/ex-navigation';
-import ExNavigationAssets from '@exponent/ex-navigation/src/ExNavigationAssets';
+import { Image, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { withNavigation } from '@expo/ex-navigation';
+import ExNavigationAssets from '@expo/ex-navigation/src/ExNavigationAssets';
 
 const BACK_BUTTON_HIT_SLOP = { top: 0, bottom: 0, left: 0, right: 30 };
 
@@ -17,9 +12,10 @@ export default class BackButton extends React.Component {
       <TouchableOpacity
         onPress={this._onPress}
         hitSlop={BACK_BUTTON_HIT_SLOP}
-        style={buttonStyles.buttonContainer}>
+        style={buttonStyles.buttonContainer}
+      >
         <Image
-          style={[buttonStyles.button, {tintColor: '#fff'}, this.props.style]}
+          style={[buttonStyles.button, { tintColor: '#fff' }, this.props.style]}
           source={ExNavigationAssets.backIcon}
         />
       </TouchableOpacity>
@@ -36,7 +32,7 @@ export default class BackButton extends React.Component {
     } else {
       this.props.navigator.pop();
     }
-  }
+  };
 }
 
 const buttonStyles = StyleSheet.create({
@@ -44,7 +40,7 @@ const buttonStyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   button: {
     resizeMode: 'contain',
@@ -53,12 +49,12 @@ const buttonStyles = StyleSheet.create({
         height: 21,
         width: 13,
         marginLeft: 8,
-        marginRight: 6,
+        marginRight: 6
       },
       android: {
         height: 30,
-        width: 30,
-      },
-    }),
-  },
+        width: 30
+      }
+    })
+  }
 });
